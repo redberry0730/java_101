@@ -1,0 +1,313 @@
+**Wrapper Class
+=>Scala Data 를 Vector Data 처럼 사용하기 위한 클래스
+=>Scala Data 는 변수 자체가 데이터를 가리키기 때문에 멤버 메소드를 소유할 수 가 없고 Object 클래스가 최상위 클래스인데 이 클래스로 부터 상속을 받지 않았기 때문에 Object 클래스로 만든 변수에 데이터를 직접 대입할 수 없습니다.
+Scala Data 가 아니라면 유용한 자신만의 멤버 메소드도 소유할 수 있고 Object 클래스로 만들어진 변수에 대입도 가능해집니다.
+이런 이유 때문에 최근에 많이 사용하는 언어들은(Python, R, Kotlin, Swift 등) 기본형을 없애고 전부 Vector 데이터 처럼 사용할 수 있도록 클래스를 제공합니다.
+
+=>클래스는 Boolean, Byte, Short, Character, Integer, Long, Float, Double
+
+1.Integer: 정수를 저장하기 위한 Wrapper Class
+1)생성자를 이용한 인스턴스 생성
+Integer(int value)
+
+2)문자열을 가지고 인스턴스 생성
+Integer.parseInt(String str)
+=>정수로 변환할 수 없는 문자열이면 NumberFormatException 이 발생
+
+3)int 나 String 으로 변환
+int intValue() 를 호출하면 정수로 변환해서 리턴
+String toString() 을 호출하면 정수 값을 문자열로 만들어서 리턴
+
+2.나머지 클래스들은 자신의 자료형으로 이름만 변경하면 됩니다.
+
+3.Auto Boxing 과 Auto UnBoxing
+=>Boxing: 기본형 데이터를 인스턴스 화 시키는 것
+=>기본형 데이터를 Wrapper Class의 참조형 변수에 바로 대입하는 것
+//Auto Boxing
+Integer i = new Integer(10);
+i = 10;
+
+//Auto UnBoxing
+int n = i;
+
+4.실습
+
+public class Wrapper {
+
+	public static void main(String[] args) {
+		//정수를 가지고 Integer 객체 생성
+		//안되는 것이 아니고 1.9 버전 이후에 경고
+		//Integer integer = new Integer(123);
+		
+		//Auto Boxing
+		Integer integer = 123;
+		
+		//문자열을 가지고 생성
+		integer = Integer.parseInt("1234");
+		System.out.println(integer);
+
+		//예외 발생 - 정수로 변경할 수 없는 문자열
+		//integer = Integer.parseInt("123.4");
+		//System.out.println(integer);
+		
+		//문자열로 변환 - GUI(Windows, Mac, Android 등) 프로그래밍을 할 때 중요
+		//GUI 프로그래밍에서는 문자열만 출력이 가능합니다.
+		//toString 은 Object 클래스의 메소드
+		//이 메소드를 Integer 클래스에서 overriding 되서 원래의 기능과 다른 기능을 합니다.
+		//원래의 기능은 클래스이름@해시코드 인데 정수 데이터가 문자열로 변환된 결과
+		//이 메소드가 오버라이딩 되었다는 것은 Document 에서 확인 가능
+		String str = integer.toString();
+		System.out.println(str);
+	}
+
+}
+
+5.BigInteger & BigDecimal
+=>큰 정수 와 크거나 정밀한 숫자를 위한 클래스
+=>double 은 정밀한 소수를 표현할 수 없습니다.
+10진 숫자 데이터를 2진수로 변환해서 저장하기 때문에 정확한 실수를 표현할 수 없습니다.
+숫자 데이터를 배열로 저장했다가 계산을 할 때 숫자로 변환해서 계산을 합니다.
+=>크거나 정밀한 숫자를 계산하거나 자바의 데이터베이스 프레임워크를 사용할 때 중요
+스프링을 학습할 때 한 번 봐두면 됩니다.
+=>실제 자바 애플리케이션을 만들 때는 자바 만으로만 만드는 경우는 거의 없고 Spring 이라고 하는 프레임워크를 이용하는 경우가 많습니다.
+Java -> Web 기본 기술(HTML, CSS, JavaScript) -> Spring
+           데이터베이스
+
+**java.lang 의 클래스
+1.System 클래스
+=>추상 클래스 가 아니고 Interface 도 아닌데 Constructor 가 없습니다.
+=>모든 메소드가 static 메소드라서 인스턴스를 생성할 필요가 없기 때문입니다.
+=>주요 메소드
+long currentTimeMillis(): 1970년 1월 1일 자정(epoch time)으로 부터 지나온 시간을 1/1000 초 단위로 계산해서 정수로 리턴
+long nanoTime(): 1970년 1월 1일 자정(epoch time)으로 부터 지나온 시간을 1/1000000000 초 단위로 계산해서 정수로 리턴
+
+int identityHashCode(Object object): 실제 해시코드 리턴, 메소드의 매개변수가 Object 타입이면 모든 데이터를 대입할 수 있습니다.
+
+String getenv(String name): name 에 해당하는 환경 변수 값을 리턴
+String getProperty(String key): key 에 해당하는 시스템의 속성 값을 문자열로 리턴
+이 2개의 메소드는 현재 실행 중인 컴퓨터의 환경을 파악할 때 사용
+Mac 인지 Linux 인지 Windows 인지 자바의 버전은 얼마인지 이런 것들을 확인해서 프로그램을 동적으로 변경해서 실행하도록 할 때 사용
+
+=>static 멤버
+in: 표준 입력 장치 - 키보드
+out: 표준 출력 장치 - 모니터
+err: 표준 에러 장치 - 출력 장치와 같이 모니터에 출력을 하는데 빨간색으로 출력하고 비동기적으로 동작하기 때문에 out 으로 출력한 것과 순서대로 출력된다는 보장을 못합니다. 
+
+2.Math 클래스
+=>수학과 관련된 클래스
+=>Constructor 가 없음
+=>모든 멤버가 static
+=>이 클래스는 연산 속도는 빠르지만 운영체제 별로 다른 결과를 만들어 내는 경우가 있습니다.
+정확한 결과를 원하는 경우는 연산 속도는 느리지만 모든 운영체제에서 동일한 결과를 만들어내는 StringMath 클래스를 사용하면 됩니다. 
+
+3.Runtime 클래스
+=>프로세스 실행과 관련된 클래스
+=>Constructor 가 없음
+=>모든 멤버가 static 이 아님
+이 경우는 클래스이름Builder 나 클래스이름Factory 가 있는지 확인
+이런 이름의 클래스가 없다면 자신의 클래스 안에 static 자신의클래스 인 메소드를 찾아서 인스턴스를 생성해야 합니다.
+
+
+public class LangMain {
+
+	public static void main(String[] args) {
+		//HelloWorld를 10000번 출력하는데 걸리는 시간
+		
+		//작업 시작한 시간을 저장
+		long start = System.currentTimeMillis();
+		for(int i=0; i<10000; i++) {
+			System.out.println("Hello World");
+		}
+		//작업 종료한 시간을 저장
+		long end = System.currentTimeMillis();
+		
+		System.out.println("작업에 소요된 시간:" + (end-start) + "밀리초");
+		
+		//운영체제 버전과 자바 버전을 확인
+		String osname = System.getProperty("os.name");
+		String javaversion = System.getProperty("java.version");
+		
+		System.out.println("현재 운영체제:" + osname);
+		System.out.println("자바 버전:" + javaversion);
+
+	}
+
+}
+
+
+**문자열 관련 클래스
+1.String, StringBuffer -> StringBuilder
+=>String: 변하지 않는 문자열을 저장하는데 사용
+=>StringBuilder: 변할 수 있는 문자열을 저장하는데 사용
+=>StringBuffer: 스레드에 안전한 StringBuilder 의 예전 버전 클래스
+
+=>String 클래스를 가지고 문자열을 결합할 때 + 연산자를 사용하게 되면 데이터를 변경할 수 없기 때문에 첫번째 문자열을 다른 곳에 복사해서 작업을 수행하기 때문에 메모리를 많이 사용하고 StringBuilder 는 변할 수 있는 문자열을 저장하기 때문에 append 로 결합 연산을 할 때 첫번째 데이터를 복사해서 작업을 수행할 필요가 없기 때문에 메모리를 절약할 수 있습니다.
+=>보통의 경우는 String으로 충분하고 아주 여러 번 문자열을 결합하는 연산을 해야 한다면 그 경우에는 StringBuilder를 고려할 필요가 있습니다.
+최근의 버전에서는 String 도 내부적으로 메모리 최적화를 이용하기 때문에 String 을 사용하나 StringBuilder 를 사용하나 큰 차이가 없습니다.
+=>이 영역은 자바로 면접을 보러 갈 때 반드시 숙지 해야 합니다.
+
+2.String 클래스
+=>변하지 않는 문자열을 저장하기 위한 클래스
+1)인스턴스 생성
+=>문자열 리터럴을 직접 대입해서 생성 가능합니다.
+=>String(String str): 다른 문자열을 이용해서 생성 가능
+=>String(byte [] bytes[, String encoding]): 바이트 배열을 가지고 encoding을 적용해서 문자열을 생성 - 파일을 읽어서 만들거나 네트워크에서 전송받은 내용을 가지고 만들 때 주로 이용
+
+2)비교하는 메소드
+=>boolean equals(String other): 내용이 같은지 비교해주는 메소드
+=>int compareTo(String other): 문자열의 크기를 비교해서 정수로 리턴, 호출하는 문자열이 크면 1 같으면 0 매개변수 문자열이 더 크면 -1
+크기 비교는 첫글자부터 ASCII Code 로 변환해서 Code 값을 가지고 비교
+=>int compareToIngnoreCase(String other): 대소문자를 구분하지 않고 크기 비교
+
+3)문자열의 길이와 하나의 문자를 가져오는 메소드
+=>int length(): 문자의 개수를 리턴
+=>boolean isEmpty(): 문자열의 존재 여부를 리턴
+=>char charAt(int index): index 번째 문자를 리턴
+=>length 와 charAt 만으로 나머지 모든 메소드의 역할을 대신하는 것을 공부를 하면 알고리즘 공부에 많은 도움이 됩니다.
+가끔 코딩 테스트에서 C 언어 와 함께 선택해서 테스트에 응시할 수 있는 경우 Java 에서 문자열 메소드는 length 와 charAt 만으로 제한을 하는 경우가 있습니다.
+
+4)영문에서 고려할 상황
+=>대소문자를 구별한 것인지 문제?
+대부분의 경우는 대소문자를 구분하지 않습니다.
+비밀번호를 제외하고는 대부분 대소문자를 구분하지 않습니다.
+데이터베이스에 저장할 때 나 비교를 할 때 대문자나 소문자로 전부 변경해서 비교하는 것이 좋습니다.
+=>String toUpperCase(): 모두 대문자로 변경해주는 메소드
+=>String toLowerCase(): 모두 소문자로 변경해주는 메소드
+
+5)좌우 공백 제거 문제
+=>비밀번호를 제외하고는 문자열을 사용할 때 좌우 공백을 제거하고 사용합니다.
+=>String trim(): 좌우 공백을 제거하는 메소드
+
+6)조회
+=>int indexOf(char ch 또는 String str): 데이터를 검색해서 찾은 위치를 리턴하는데 
+데이터를 찾지 못하면 음수를 리턴
+=>int lastIndexOf(char ch 또는 String str): 데이터를 뒤에서부터 검색해서 찾은 위치를 리턴하는데 데이터를 찾지 못하면 음수를 리턴
+
+7)문자열 분할
+=>String substring(int beginIndex): beginIndex 부터 마지막까지 자릅니다.
+=>String substring(int beginIndex, int endIndex): beginIndex 부터 endIndex - 1까지 문자열을 자릅니다.
+=>String [] split(String regex): regex를 기준으로 분할해서 문자열 배열로 리턴
+
+
+public class StringMain {
+
+	public static void main(String[] args) {
+		//String 인스턴스 만들기
+		//C 언어나 Java 에서는 문자열을 저장할 때 str 이라는 변수를 많이 사용
+		//Python 에서는 절대로 str 이라는 변수를 이용하면 안됩니다.
+		//Python 의 문자열 클래스 이름이 str 입니다.
+		//str 이라는 변수를 만들어버리면 원래 제공해주는 str 클래스를 사용할 수 
+		//없습니다.
+		String str = "Hello String";
+		
+		String other = "Hello string";
+		
+		//2개의 문자열이 같은지 비교
+		//내용이 다르므로 false
+		System.out.println(str.equals(other));
+		
+		//크기 비교
+		//뒤의 문자열이 더 크므로 -1
+		System.out.println(str.compareTo(other));
+		
+		//문자 단위로 출력
+		for(int i=0; i<str.length(); i++) {
+			char ch = str.charAt(i);
+			System.out.print(ch + " ");
+		}
+		System.out.println();
+		//모두 대문자로 변환
+		System.out.println(str.toUpperCase());
+		//좌우 공백 제거
+		System.out.println("    H i         ".trim());
+		
+		String imageName = "suzi.png";
+		//imageName 에서 확장자만 추출해서 출력 - png
+		
+		//.의 위치를 찾아서 그 뒤의 데이터를 가져오기
+		/*
+		int idx = imageName.indexOf(".");
+		//idx 뒤의 데이터 자르기
+		String ext = imageName.substring(idx + 1);
+		System.out.println(ext);
+		*/
+		
+		//split을 이용
+		//java 에서는 split 의 매개변수가 정규식이라서 . 대신에 \\.을 이용
+		String [] ar = imageName.split("\\.");
+		String ext = ar[ar.length - 1];
+		System.out.println(ext);
+		
+		String url = "http://www.adam.co.kr/index.do";
+		//url 에서 마지막 / 다음의 문자열을 추출해서 출력 - index.do
+		
+		/*
+		ar = url.split("/");
+		String action = ar[ar.length - 1];
+		System.out.println(action);
+		*/
+		
+		int idx = url.lastIndexOf("/");
+		String action = url.substring(idx + 1);
+		System.out.println(action);
+	}
+
+}
+
+8)서식을 이용한 문자열 생성 - format
+=>서식
+%d: 정수
+%f: 실수
+%c: 문자 1개
+%b: boolean
+%s: 문자열이나 배열을 매핑하는데 시작위치에서부터 문자 단위로 꺼내서 출력하는데 null을 만날 때 까지 출력
+
+=>static String format(String 서식, 데이터 나열)
+서식에 맞는 데이터를 매핑시켜서 하나의 문자열로 리턴하는 메소드
+메시지를 만들기 위해서 이용
+GUI 프로그래밍에서 출력을 하기 위해서 사용
+=>이 형태는 System.out.printf 에 이용하면 모니터에 출력을 합니다.
+
+	int x = 100;
+		int y = 70;
+		
+		//x:100 y:70 이런 형태로 출력
+		String msg = String.format("x:%d y:%d", x, y);
+		System.out.println(msg);
+		//서식에 숫자를 적용하면 자릿수
+		msg = String.format("x:%5d y:%5d", x, y);
+		System.out.println(msg);
+		//숫자 앞에 0을 추가하면 빈자리는 0으로 채움
+		msg = String.format("x:%05d y:%05d", x, y);
+		System.out.println(msg);
+		
+		double d = 10.754;
+		//실수는 소수가 6자리가 기본
+		msg = String.format("%f", d);
+		System.out.println(msg);
+		//소수 2번째 자리까지 출력 - 3번째 자리에서 반올림
+		msg = String.format("%.2f", d);
+		System.out.println(msg);
+		//소수 1번째 자리까지 출력 - 2번째 자리에서 반올림
+		msg = String.format("%.1f", d);
+		System.out.println(msg);
+
+**연습문제
+1.
+공백공백공백공백*공백공백공백공백
+공백공백공백***공백공백공백
+공백공백*****공백공백
+공백*******공백
+*********
+
+의 형태로 출력해보기 - 제어문 과 패턴 찾기 연습
+
+2. 아래 문자열에서 BCCB 가 나오는 위치들을 전부 출력하기
+단 겹쳐서 나오는 경우는 제외
+ABCCBDKSJDMBCCBCCBDKDKDBCCBDKDJDDK
+
+이 경우는 1, 11, 23 으로 출력
+이 문제가 염기서열 문제 - 의료 IT 에서 질병을 예측
+
+
+

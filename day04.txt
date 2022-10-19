@@ -1,0 +1,229 @@
+** 연산자
+1.관계 연산자
+1)>,>=,<,<=
+=>숫자 데이터끼리 크기 비교를 해서 boolean(true 또는 false) 으로 결과를 리턴하는 연산자
+
+2)==, !=
+==: 모든 데이터에 사용이 가능한 연산자인데 2개의 데이터의 값이 같은지 비교해서 boolean 으로 리턴하는 연산자
+
+!=: 모든 데이터에 사용이 가능한 연산자인데 2개의 데이터의 값이 다른지 비교해서 boolean으로 리턴하는 연산자
+
+2.논리 연산자
+1)조건 논리 연산자
+&&(and - 그리고): 2개의 데이터가 모두 true 인 경우만 true를 리턴하고 그 이외의 경우는 false를 리턴하는 연산자
+
+||(or - 또는): 2개의 데이터가 모두 false 인 경우만 false를 리턴하고 그 이외의 경우는 true를 리턴하는 연산자
+
+&& 나 || 는 + 나 - 처럼 좌우 식의 위치를 변경해도 결과는 같습니다.
+
+2)Don't care 또는 Short Cut: &&의 경우는 앞의 식의 결과가 false 이면 뒤의 식의 결과에 상관없이 결과가 false 이기 때문에 뒤의 식을 확인하지 않습니다.
+||의 경우는 앞의 식이 true 이면 뒤의 식의 결과에 상관없이 결과가 true 이기 때문에 뒤의 식을 확인하지 않습니다.
+
+3)비트 논리 연산자
+=>정수 데이터에만 사용하는 연산자로 비트 단위로 연산해서 결과는 정수로 리턴하는 연산자
+
+&(and): 둘 다 1일 때만 1 그 이외의 경우는 0
+
+|(or): 둘 다 0일 때만 0 그 이외의 경우는 1
+
+^(xor-eXclusive OR): 2개가 같으면 0 다르면 1
+
+x = 24 : 00000000 00000000 00000000 00011000
+y = 23 : 00000000 00000000 00000000 00010111
+
+x & y  :  00000000 00000000 00000000 00010000 => 16
+x | y    :  00000000 00000000 00000000 00011111 => 31
+x ^ y   : 00000000 00000000 00000000 00001111 => 15
+  
+=>비트 연산은 이미지 프로세싱이나 머신러닝에 사용됩니다.
+시스템 프로그래밍에서도 많이 사용됩니다.
+&는 삭제할 때 사용합니다.
+|는 데이터 복사할 때 사용합니다.
+^는 비교에 사용합니다.
+
+3.삼항 연산자
+boolean이 데이터?true일때 수행할 내용:false일 때 수행할 내용
+
+a > b ? a : b
+=>a 가 b보다 크다면 a 그렇지 않으면 b
+
+4.할당 연산자 - 대입 연산자라고도 함
+ = : 오른쪽의 데이터가 있는 곳의 참조를 왼쪽의 변수의 대입합니다.
+
++=: 왼쪽의 변수가 가리키는 데이터에 오른쪽의 데이터를 + 한 후 다시 왼쪽의 변수가 가리키도록 합니다.
++ 대신에 - 나 * 등 도 가능합니다.
+
+**제어문(Control Statement)
+=>명령의 흐름을 변경하는 명령어
+1.종류
+1)분기문: 조건이나 값에 따라 다른 문장을 실행하는 것
+
+2)반복문: 특정한 패턴을 반복하는 것
+
+3)기타 제어문: 분기문이나 반복문 과 함께 사용하는 명령문
+
+2.if
+=>조건에 따라 분기하고자 할 때 사용하는 명령어
+if(boolean 데이터 - 변수, 연산식, 메소드 호출구문){
+	() 안의 내용이 true 일 때 수행할 내용
+}else if(boolean 데이터){
+	() 안의 내용이 true일 때 수행할 내용
+}else{
+	앞의 모든 조건이 false 일 때 수행할 내용
+}
+
+=>if 는 한번만 나와야 함
+=>else if는 0번 이상 여러 번 나와도 됩니다.
+=>else는 생략하거나 1번만 나와야 합니다.
+=>{ }안의 내용이 1줄이면 { } 생략 가능합니다.
+public class IfTest {
+
+	public static void main(String[] args) {
+		int score = 98;
+		
+		//score 가 60 이상이면 합격이라고 출력하고
+		//그렇지 않으면 불합격이라고 출력
+		if(score >= 60) {
+			System.out.println("합격");
+		}else {
+			System.out.println("불합격");
+		}
+		
+		int su = 88;
+		//su 가 짝수(2로 나눈 나머지가 0)라면 짝수
+		//그렇지 않으면 홀수라고 출력
+		if(su % 2 == 0) {
+			System.out.println("작수");
+		}else {
+			System.out.println("홀수");
+		}
+		
+		//score 가 90 ~ 100 사이이면 A
+		//score 가 80 ~ 89 사이이면 B
+		//score 가 70 ~ 79 사이이면 C
+		//score 가 60 ~ 69 사이이면 D
+		//그 이외의 경우는 F라고 출력
+		if(score >= 90 && score <= 100) {
+			System.out.println("A");
+		}else if(score >= 80 && score <= 89) {
+			System.out.println("B");
+		}else if(score >= 70 && score <= 79) {
+			System.out.println("C");
+		}else if(score >= 60 && score <= 69) {
+			System.out.println("D");
+		}else {
+			System.out.println("F");
+		}
+	}
+
+}
+
+=>if는 각각의 블록입니다.
+if 안에서 만든 변수는 독립적으로 생성되기 때문에 if 외부에서 사용할 수 없습니다.
+
+3.switch
+=>값에 의한 분기
+switch(변수 나 연산식 또는 메소드 호출구문){
+	case 값1:
+		() 안의 내용이 값1일 때 수행할 내용
+		break;
+	case 값2:
+		() 안의 내용이 값2일 때 수행할 내용
+		break;
+	...
+	default:
+		() 안의 내용이 일치하는 값이 없을 때 수행할 내용
+		break;
+}
+
+=>( ) 안의 결과는 정수나 문자열만 가능합니다.
+실수는 안됩니다.
+switch는 전체가 하나의 블록입니다.
+어떤 case 안에서 변수를 만들면 다른 영역에서도 사용할 수 있습니다.
+=>break를 생략하면 break를 만날때까지 계속 수행합니다.
+package kakao.itstudy.operator;
+
+public class SwitchTest {
+
+	public static void main(String[] args) {
+		int menu = 1;
+
+		//menu 가 1이면 중식
+		//menu 가 2이면 한식
+		//menu 가 3이면 분식
+		//그 이외의 경우는 양식이라고 출력
+		//if로 해결 가능
+		if(menu == 1) {
+			System.out.println("중식");
+		}else if(menu == 2) {
+			System.out.println("한식");
+		}else if(menu == 3) {
+			System.out.println("분식");
+		}else {
+			System.out.println("양식");
+		}
+
+		switch(menu) {
+		case 1:
+			//break가 없으면 break를 만날때까지 진행
+			System.out.println("중식");
+			//break;
+		case 2:
+			System.out.println("한식");
+			break;
+		case 3:
+			System.out.println("분식");
+			break;
+		default:
+			System.out.println("양식");
+			break;
+		}
+
+		//switch는 문자열은 가능하지만 실수는 안됨
+		/*
+		double d = 10.7;
+		switch(d) {
+		case 10.7:
+			System.out.println("실수");
+			break;
+		}
+		 */
+
+		String ml = "회귀";
+		switch(ml) {
+		case "회귀":
+			System.out.println("미래의 값을 예측");
+			break;
+		case "군집":
+			System.out.println("그룹을 생성해서 할당");
+			break;
+		default:
+			System.out.println("그 이외의 머신러닝");
+			break;
+		}
+
+
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

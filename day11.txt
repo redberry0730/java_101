@@ -1,0 +1,334 @@
+**java.lang 패키지
+=>자바의 기본 패키지
+=>import 하지 않아도 클래스 이름만으로 사용이 가능
+=>Object, Wrapper Class, 문자열 관련 클래스, System 관련 클래스 등이 존재
+
+1.java.lang.Object
+=>자바의 최상위 클래스
+=>자바의 모든 클래스는 Object 클래스로부터 상속을 받음
+=>이 클래스는 인스턴스를 만들어서 직접 사용하기 위한 클래스가 아니고 다른 모든 클래스들이 공통으로 가져야 하는 메소드들을 소유한 클래스
+
+1)제일 중요한 점
+=>Object 자료형으로 된 변수에는 모든 자료형의 데이터를 대입할 수 있습니다.
+객체 지향 언어에서는 상위 클래스 타입으로 만들어 진 변수에 하위 클래스 타입의 인스턴스 참조를 대입할 수 있습니다. 
+=>Object 타입으로 리턴된 데이터는 반드시 강제 형 변환을 해서 원래의 자료형으로 되돌려서 사용해야 합니다.
+
+2)주요 메소드
+=>Object clone(): 인스턴스를 복제해주기 위한 메소드 - 재정의해서 사용
+=>boolean equals(Object object): 인스턴스의 내용이 같은지 비교하는 메소드 - 재정의 해서 사용
+=>int hashCode(): 해시코드를 리턴하는 메소드인데 equals를 재정의하면 같이 재정의 하는 것을 권장
+=>String toString(): 인스턴스를 출력하는 메소드에 대입했을 때 호출되는 메소드로 인스턴스를 문자열로 리턴해주는 메소드로 일반적으로 재정의해서 사용
+이 메소드를 재정의하지 않으면 클래스이름 과 해시코드를 리턴
+
+=>notify, notifyAll, wait: 멀티 스레드 관련 메소드
+
+3)인스턴스의 자료형 확인 연산자
+인스턴스 instanceof 클래스
+=>인스턴스가 클래스에 대입 가능한 지 여부를 리턴
+
+4)인스턴스의 등가성(같은지 여부 확인)
+==: 저장하고 있는데가 같은지 여부를 확인, 동일한 데이터를 가리키고 있는지 확인
+=>내용이 같은지 비교하고자 할 때는 자바에서는 equlas 메소드를 이용하는 것을 권장합니다.
+=>hashCode: 데이터를 구분하기 위한 코드로 일종의 id
+자바의 hashCode() 메소드는 해시 코드를 리턴하는 메소드인데 동일한 인스턴스라면 해시코드가 같아야 합니다.
+해시코드만을 비교해서 2개의 인스턴스가 같은지 여부를 빠르게 판단할 수 있기 때문입니다.
+=>자바에서 데이터의 실제 해시코드를 가져오는 방법은 System.getIdentityHashcode(데이터) 입니다.
+
+5)실습을 위한 Data 클래스 생성 - 프로퍼티, 생성자, 접근자 메소드 만 포함
+public class Data {
+	//번호 와 이름을 저장하는 프로퍼티
+	private int num;
+	private String name;
+	
+	//생성자 - 인스턴스의 프로퍼티들의 값을 빠르게 설정하기 위해서 생성
+	public Data() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Data(int num, String name) {
+		super();
+		this.num = num;
+		this.name = name;
+	}
+
+	//프로퍼티에 접근하기 위한 접근자 메소드
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+}
+
+6)실습을 위해서 Main 클래스를 만들어서 Data 클래스 인스턴스를 생성하고 프로퍼티의 내용을 확인
+
+public class Main {
+
+	public static void main(String[] args) {
+		//Data 클래스의 인스턴스를 1개 생성
+		Data origin = new Data(1, "adam");
+		
+		//origin 의 num 과 name 출력
+		System.out.println(origin.getNum() + ":" + origin.getName());
+		
+		//인스턴스를 바로 출력 - toString 을 재정의하지 않아서
+		//클래스 이름 과 해시 코드 출력 
+		System.out.println(origin);
+	}
+
+}
+
+7)Data 클래스에 toString 메소드를 추가 - [Source] - [Generate toString]
+public class Main {
+
+	public static void main(String[] args) {
+		//Data 클래스의 인스턴스를 1개 생성
+		Data origin = new Data(1, "adam");
+		
+		//origin 의 num 과 name 출력
+		System.out.println(origin.getNum() + ":" + origin.getName());
+		
+		//인스턴스를 바로 출력
+		System.out.println(origin);
+	}
+
+}
+
+8)Main 클래스를 다시 실행
+=>System.out.println(origin); 의 결과가 num 과 name 의 값을 출력
+거의 모든 언어에서 인스턴스를 바로 출력하면 그 언어에서 인스턴스를 문자열로 만들어주는 메소드의 결과를 출력합니다.
+java 는 이 메소드가 toString 입니다.
+
+9)Main 클래스의 main 메소드를 수정
+=>하단에 추가하고 실행
+		Data copy = origin;
+		
+		//새로운 인스턴스를 만들어서 origin 과 동일한 1 과 adam을 저장
+		Data obj = new Data(1, "adam");
+		
+		//copy 와 origin이 같으지 비교
+		//==는 접근할 수 있는 데이터가 같은지 확인
+		
+		//true
+		System.out.println("copy 와 origin:" + (copy == origin));
+		//false
+		System.out.println("obj 와 origin:" + (obj == origin));
+
+10)Data 클래스에 내용이 같은지 비교하는 메소드를 생성
+	//내용이 같은지 비교하는 메소드 - 이름은 equals를 권장
+	public boolean equals(Data other) {
+		//어떤 것이 같으면 같다고 할 것인 조건
+		//나의 num 과 상대방의 num 이 같으면 같다고 합니다.
+		if(this.num == other.num) {
+			return true;
+		}
+		return false;
+	}
+
+11)Main 클래스의 main 메소드를 수정하고 실행
+=>하단에 코드를 추가
+System.out.println("obj 와 origin 의 내용이 같은지 비교:" 
+				+ obj.equals(origin));
+
+2.데이터의 복사
+1)데이터의 참조를 다른 변수에 대입
+=>= 를 이용해서 데이터의 참조를 대입하는 것
+=>2개의 변수가 가리키는 데이터가 같기 때문에 한쪽의 변화가 다른쪽에 영향을 주게 됩니다.
+
+2)weak copy(약한 복사)
+=>데이터를 복제해서 대입해주는 것인데 내부에 배열이나 인스턴스 처럼 여러 개의 데이터를 가진 프로퍼티가 있을 때 재귀적으로 복제하지는 않는 방식
+
+3)deep copy(깉은 복사)
+=>내부에 배열이나 인스턴스 같은 여러 개의 데이터를 가진 프로퍼티가 있을 때 재귀적으로 해주는 방식 
+
+4)응용 프로그램에서의 파일 열기 와 저장
+=>프로그램에서 파일을 열면 실제 파일을 열어서 주는 것이 아니고 파일의 복제본을 만들어서 넘겨줍니다.
+편집을 하다가 저장을 하지 않으면 원본은 편집한 내용이 반영되지 않습니다.
+편집한 내용을 반영하고자 하면 저장 버튼을 누르는데 이 작업은 실제롤 복제본의 데이터를 다시 원본에 복사를 하는 작업입니다.
+=>이 원리는 네트워크나 데이터베이스에서도 그대로 적용
+
+서버(데이터) <---> 데이터복사본<----------> 클라이언트
+복사본을 원본 데이터에 반영하는 작업을 commit
+반대로 복사본을 폐기처분하는 것을 rollback
+
+데이터 분석 분야에서는 이 작업이 중요
+분석은 한 번에 끝나는 것이 아니고 하나의 데이터에 여러 알고리즘을 적용해서 최적의 모델을 찾아서 결론을 내는 것입니다.
+원본 데이터를 변형하면 알고리즘을 바꿀 때 마다 원본 데이터를 다시 읽어서 작업을 해야 합니다.
+시간이 오래 걸리기 때문에 데이터 분석에서는 데이터를 복제해서 작업하고 작업이 끝나면 복제한 데이터를 폐기 처분하고 원본 데이터를 이용해서 다시 작업합니다.
+
+데이터 분석
+R - 데이터 분석만 하는 언어 - 기본이 복제
+Python - 데이터 분석도 하는 언어
+
+5)실습을 위해서 데이터를 표현하기 위한 클래스를 생성
+import java.util.Arrays;
+
+//여러 개의 데이터를 하나로 묶어서 표현하기 위한 클래스 - Variable Object 의 약자
+//Data Transfer Object 라고도 합니다.
+public class VO {
+	//프로퍼티
+	private int num;
+	private String name;
+	private int [] scores;
+	
+	public VO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public VO(int num, String name, int[] scores) {
+		super();
+		this.num = num;
+		this.name = name;
+		this.scores = scores;
+	}
+	
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public int[] getScores() {
+		return scores;
+	}
+	public void setScores(int[] scores) {
+		this.scores = scores;
+	}
+	
+	//프로퍼티에 배열이 있는 경우에는 index를 받아서 index 번째 데이터를
+	//리턴하는 메소드 와 index 와 data를 받아서 index 번째 데이터를 수정하는
+	//메소드를 같이 만들어 주는 것이 좋습니다.
+	public int getScore(int idx) {
+		return scores[idx];
+	}
+	
+	public void setScore(int idx, int score) {
+		scores[idx] = score;
+	}
+	
+	@Override
+	public String toString() {
+		return "VO [num=" + num + ", name=" + name + ", scores=" + Arrays.toString(scores) + "]";
+	}
+}
+
+6)CopyMain 클래스를 만들어서 main 메소드에 작성하고 실행
+public class CopyMain {
+
+	public static void main(String[] args) {
+		int [] scores = {100, 90, 80};
+		VO original = new VO(1, "adam", scores);
+
+		//참조를 복사
+		VO ref = original;
+		
+		//ref 가 내부 데이터를 변경하면 original에도 영향을 줍니다.
+		ref.setNum(2);
+		System.out.println("ref:" + ref);
+		System.out.println("original:" + original);
+		
+	}
+
+}
+
+7)위의 문제를 해결하기 위해서 VO 클래스에 데이터를 복제해주는 메소드를 추가
+	//약한 복사를 해주는 메소드
+	public VO weakCopy() {
+		//새로운 인스턴스를 생성
+		VO other = new VO();
+		
+		//자신의 프로퍼티의 값을 새로운 인스턴스에 대입
+		other.num = this.num;
+		other.name = this.name;
+		other.scores = this.scores;
+		
+		//새로운 인스턴스를 리턴
+		return other;
+	}
+
+8)CopyMain 클래스의 main 메소드 하단에 작성하고 실행
+		//얕은 복사를 수행
+		VO weakCopy = original.weakCopy();
+		//현재는 weakCopy 와 original의 내용이 같음
+		System.out.println("weakCopy:" + weakCopy);
+		System.out.println("original:" + original);
+
+		weakCopy.setNum(3);
+		//weakCopy의 num 변화는 original에 아무런 영향도 없음
+		System.out.println("weakCopy 의 num 변화 후 결과");
+		System.out.println("weakCopy:" + weakCopy);
+		System.out.println("original:" + original);
+
+		weakCopy.setScore(0, 99);
+		//weakCopy의 score의 변화는 original에 영향을 미치게 됩니다.
+		//scores는 배열이기 때문에 이 데이터의 참조를 복사하면 데이터를 복제한 것이 아니고
+		//참조를 복사한 것이기 때문입니다.
+		System.out.println("weakCopy 의 score 변화 후 결과");
+		System.out.println("weakCopy:" + weakCopy);
+		System.out.println("original:" + original);
+
+9)VO 클래스에 깊은 복사를 해주는 메소드를 추가
+	//깊은 복사를 해주는 메소드
+	public VO deepCopy() {
+		//새로운 인스턴스를 생성
+		VO other = new VO();
+
+		//자신의 프로퍼티의 값을 새로운 인스턴스에 대입
+		other.num = this.num;
+		other.name = this.name;
+		//other.scores = this.scores;
+		
+		//새로운 배열을 만들어서 데이터를 전부 옮겨주어야 합니다.
+		other.scores = new int[this.scores.length];
+		for(int i=0; i<other.scores.length; i++) {
+			other.scores[i] = this.scores[i];
+		}
+
+		//새로운 인스턴스를 리턴
+		return other;
+	}
+
+10)CopyMain 클래스의 main 메소드에 코드를 추가하고 실행
+		//깊은 복사를 수행
+		VO deepCopy = original.deepCopy();
+		//현재는 deepCopy 와 original의 내용이 같음
+		System.out.println("deepCopy:" + deepCopy);
+		System.out.println("original:" + original);
+
+		deepCopy.setNum(4);
+		//deepCopy의 num 변화는 original에 아무런 영향도 없음
+		System.out.println("deepCopy 의 num 변화 후 결과");
+		System.out.println("deepCopy:" + deepCopy);
+		System.out.println("original:" + original);
+
+		
+		deepCopy.setScore(0, 88);
+		//deepCopy의 score의 변화는 original에 영향을 미치지 않습니다.
+		//scores도 복제를 했기 때문입니다.
+		System.out.println("deepCopy 의 score 변화 후 결과");
+		System.out.println("deepCopy:" + deepCopy);
+		System.out.println("original:" + original);
+
+3.java.lang.Objects
+=>Object 클래스를 확장한 클래스
+
+4.Wrapper Class
+=>Scala Data의 데이터를 인스턴스 화 해서 사용할 수 있도록 해주는 클래스
+=>Boolean, Byte, Short, Character, Integer, Long, Float, Double
